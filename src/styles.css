@@ -17,6 +17,20 @@ body {
    * CSS image reference example.
    */
   background-image: url('./images/bg-pattern.png');
-  display: flex;
-  justify-content: center;
+  
+  text-align: center;
+}
+ul{
+  list-style-type: none;
+  font-size: 20px;
+}
+li{
+  font-size: 20px;
+}
+p{
+  font-size: 20px;
+}
+h2{
+  font-size: 30px;
+  font-style: bold;
 }

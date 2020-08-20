@@ -1,45 +1,44 @@
 import './styles.css';
 
-import { debounce } from 'lodash'
+import {debounce} from 'lodash'
 import fetchCountries from './fetchCountries.js';
 import country from './data.hbs'
 import list from './data-list.hbs'
+import {error} from '@pnotify/core/dist/PNotify.js';
+import '@pnotify/core/dist/PNotify.css';
+import '@pnotify/core/dist/BrightTheme.css';
 
 
 const input = document.querySelector('#text');
 const box = document.querySelector('#box');
 
 
+input.addEventListener('input', debounce(searchFunction, 1000))
 
-fetchCountries('usa').then(data => console.log(data))
+function searchFunction() {
+    const searchValue = input.value;
 
-// input.addEventListener('input', debounce(searchFunction, 500))
+    fetchCountries(searchValue).then((data) => {
+        if(!data) {
+            return
+           }
 
-// function searchFunction(){
-// const searchValue = input.value;
-// if(!searchValue) {
-//     return
-//     };
-// fetchCountries(searchValue).then((data)=>{
-//     console.log(data);
-//     if(data.length !== 1 && data.length <= 10  ){
-//         list(data)
-//         box.insertAdjacentHTML('beforeend',  list(data))
-//     }
-//     if(!data) {
-//         return;
-//         }
+        if (data.length !== 1 && data.length<= 10  ){
+        list(data)
+        box.insertAdjacentHTML('beforeend', list(data))
+    }
+    
 
-//     if(data.length === 1){
-//        country(data);
-//     box.insertAdjacentHTML('beforeend', country(data))
-//     } 
-//     }
-// )
-// if (searchQuery === ''){
-//     box.innerHTML = '' ;
-// }
-// }
+    if(data.length === 1){
+       country(data);
+    box.insertAdjacentHTML('beforeend', country(data))
+    } 
+    if(data.length> 10) {
+            error({text: 'To many requests'})
+        }
+    })
 
-
-
+    if (searchValue === '') {
+        box.innerHTML = '';
+    }
+}
