@@ -17,11 +17,15 @@ input.addEventListener('input', debounce(searchFunction, 1000))
 
 function searchFunction() {
     const searchValue = input.value;
+    if (searchValue === ''){
+        return;
+    }
 
     fetchCountries(searchValue).then((data) => {
-        if(!data) {
-            return
-           }
+        if (!data) {
+            error({ text: "Not found" });
+            return;
+            }
 
         if (data.length !== 1 && data.length<= 10  ){
         list(data)
